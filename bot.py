@@ -81,7 +81,7 @@ was_live = False
 start_time = None
 
 print("Bot started!")
-send_notif_live("21:00 WIB")
+send_notif_live("22:00 WIB")  # test
 print("Notif sent!")
 
 while True:
