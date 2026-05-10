@@ -42,7 +42,7 @@ def send_notif_live(start_time):
     response = requests.post(url, data={
         "chat_id": CHAT_ID,
         "text": text,
-        "parse_mode": "Markdown"
+        "parse_mode": "HTML"
     })
     print(response.json())
 def send_notif_selesai(start_time, end_time):
