@@ -1,8 +1,9 @@
 import requests
 import time
 
-TOKEN = "8796451286:AAEPhIX50hDWjsBkN4mu3xTPFWXfPLPf6wE"
-CHAT_ID = "1010951175"
+import os
+TOKEN = os.environ.get("TOKEN")
+CHAT_ID = os.environ.get("CHAT_ID")
 IDN_USERNAME = "jkt48_oniel"
 CHECK_INTERVAL = 300  # 5 menit
 
