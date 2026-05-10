@@ -24,6 +24,7 @@ def send_notif():
     })
 
 was_live = False
+send_notif()
 while True:
     live = is_live()
     if live and not was_live:
