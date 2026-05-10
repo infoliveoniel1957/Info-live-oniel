@@ -6,21 +6,21 @@ from datetime import datetime
 TOKEN = os.environ.get("TOKEN")
 CHAT_ID = os.environ.get("CHAT_ID")
 IDN_USERNAME = "jkt48_oniel"
+IDN_USER_ID = "0078fe3c-8f4d-495b-bb7c-bdb2b98d0598"
 CHECK_INTERVAL = 300  # 5 menit
 
 def get_thumbnail():
+    return "https://cdn.idn.media/idnaccount/avatar/500/b00afb482407c122800161b0bab0d04b.webp"
+
+def get_live_title():
     try:
-        url = f"https://www.idn.app/{IDN_USERNAME}"
+        url = f"https://api.idn.app/v1/live-stream/{IDN_USERNAME}"
         headers = {"User-Agent": "Mozilla/5.0"}
         response = requests.get(url, headers=headers)
-        text = response.text
-        idx = text.find('og:image')
-        if idx != -1:
-            start = text.find('content="', idx) + 9
-            end = text.find('"', start)
-            return text[start:end]
+        data = response.json()
+        return data.get("title", "")
     except:
-        return None
+        return ""
 
 def is_live():
     try:
@@ -32,19 +32,32 @@ def is_live():
         return False
 
 def send_notif_live(start_time):
+    thumbnail = get_thumbnail()
+    title = get_live_title()
     text = (
-        f"🔴 *Oniel JKT48 sedang LIVE di IDN!*\n"
+        f"🔴 <b>Oniel JKT48 sedang LIVE di IDN!</b>\n"
+        + (f"🎬 {title}\n" if title else "")
+        + f"📅 Tanggal: {datetime.now().strftime('%d %B %Y')}\n"
         f"🕐 Mulai: {start_time}\n"
         f"🔗 Web: https://www.idn.app/{IDN_USERNAME}\n"
-        f"📱 App: https://www.idn.app/{IDN_USERNAME}"
+        f"📱 App: idnapp://profile/{IDN_USER_ID}"
     )
-    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-    response = requests.post(url, data={
-        "chat_id": CHAT_ID,
-        "text": text,
-        "parse_mode": "HTML"
-    })
-    print(response.json())
+    if thumbnail:
+        url = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"
+        requests.post(url, data={
+            "chat_id": CHAT_ID,
+            "photo": thumbnail,
+            "caption": text,
+            "parse_mode": "HTML"
+        })
+    else:
+        url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+        requests.post(url, data={
+            "chat_id": CHAT_ID,
+            "text": text,
+            "parse_mode": "HTML"
+        })
+
 def send_notif_selesai(start_time, end_time):
     start = datetime.strptime(start_time, "%H:%M WIB")
     end = datetime.strptime(end_time, "%H:%M WIB")
@@ -56,6 +69,7 @@ def send_notif_selesai(start_time, end_time):
 
     text = (
         f"⚫ <b>Oniel JKT48 sudah selesai LIVE</b>\n"
+        f"📅 Tanggal: {datetime.now().strftime('%d %B %Y')}\n"
         f"🕐 Mulai: {start_time}\n"
         f"🕑 Selesai: {end_time}\n"
         f"⏱ Durasi: {durasi_str}"
@@ -66,13 +80,10 @@ def send_notif_selesai(start_time, end_time):
         "text": text,
         "parse_mode": "HTML"
     })
+
 was_live = False
 start_time = None
-
-print("Bot started!")
-send_notif_live("22:26 WIB")  # test
-print("Notif sent!")
-
+send_notif_live("22:00 WIB")
 while True:
     live = is_live()
     now = datetime.now().strftime("%H:%M") + " WIB"
