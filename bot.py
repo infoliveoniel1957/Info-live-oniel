@@ -83,7 +83,7 @@ def send_notif_selesai(start_time, end_time):
 
 was_live = False
 start_time = None
-send_notif_live("22:00 WIB")
+send_notif_selesai("21:00 WIB", "22:00 WIB")
 while True:
     live = is_live()
     now = datetime.now().strftime("%H:%M") + " WIB"
