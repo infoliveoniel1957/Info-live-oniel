@@ -32,29 +32,19 @@ def is_live():
         return False
 
 def send_notif_live(start_time):
-    thumbnail = get_thumbnail()
     text = (
         f"🔴 *Oniel JKT48 sedang LIVE di IDN!*\n"
         f"🕐 Mulai: {start_time}\n"
         f"🔗 Web: https://www.idn.app/{IDN_USERNAME}\n"
         f"📱 App: https://idn.onelink.me/vGWA?af_dp=idnlive://streamer/{IDN_USERNAME}"
     )
-    if thumbnail:
-        url = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"
-        requests.post(url, data={
-            "chat_id": CHAT_ID,
-            "photo": thumbnail,
-            "caption": text,
-            "parse_mode": "Markdown"
-        })
-    else:
-        url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-        requests.post(url, data={
-            "chat_id": CHAT_ID,
-            "text": text,
-            "parse_mode": "Markdown"
-        })
-
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    response = requests.post(url, data={
+        "chat_id": CHAT_ID,
+        "text": text,
+        "parse_mode": "Markdown"
+    })
+    print(response.json())
 def send_notif_selesai(start_time, end_time):
     start = datetime.strptime(start_time, "%H:%M WIB")
     end = datetime.strptime(end_time, "%H:%M WIB")
