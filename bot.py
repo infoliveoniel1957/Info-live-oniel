@@ -134,7 +134,7 @@ was_live_idn = False
 was_live_showroom = False
 start_time_idn = None
 start_time_showroom = None
-send_notif_live_showroom("22:00 WIB")
+send_notif_selesai_showroom("22:00 WIB", "23:00 WIB")
 while True:
     now = datetime.now().strftime("%H:%M") + " WIB"
 
