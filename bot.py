@@ -79,7 +79,11 @@ def send_notif_selesai(start_time, end_time):
 
 was_live = False
 start_time = None
+
+print("Bot started!")
 send_notif_live("21:00 WIB")
+print("Notif sent!")
+
 while True:
     live = is_live()
     now = datetime.now().strftime("%H:%M") + " WIB"
