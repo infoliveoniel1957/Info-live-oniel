@@ -36,7 +36,7 @@ def send_notif_live(start_time):
         f"🔴 *Oniel JKT48 sedang LIVE di IDN!*\n"
         f"🕐 Mulai: {start_time}\n"
         f"🔗 Web: https://www.idn.app/{IDN_USERNAME}\n"
-        f"📱 App: https://idn.onelink.me/vGWA?af_dp=idnlive://streamer/{IDN_USERNAME}"
+        f"📱 App: https://www.idn.app/{IDN_USERNAME}"
     )
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     response = requests.post(url, data={
@@ -55,7 +55,7 @@ def send_notif_selesai(start_time, end_time):
     durasi_str = f"{jam} jam {menit} menit" if jam > 0 else f"{menit} menit"
 
     text = (
-        f"⚫ *Oniel JKT48 sudah selesai LIVE*\n"
+        f"⚫ <b>Oniel JKT48 sudah selesai LIVE</b>\n"
         f"🕐 Mulai: {start_time}\n"
         f"🕑 Selesai: {end_time}\n"
         f"⏱ Durasi: {durasi_str}"
@@ -64,9 +64,8 @@ def send_notif_selesai(start_time, end_time):
     requests.post(url, data={
         "chat_id": CHAT_ID,
         "text": text,
-        "parse_mode": "Markdown"
+        "parse_mode": "HTML"
     })
-
 was_live = False
 start_time = None
 
