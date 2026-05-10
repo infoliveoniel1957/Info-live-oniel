@@ -40,7 +40,7 @@ def send_notif_live(start_time):
         + f"📅 Tanggal: {datetime.now().strftime('%d %B %Y')}\n"
         f"🕐 Mulai: {start_time}\n"
         f"🔗 Web: https://www.idn.app/{IDN_USERNAME}\n"
-        f"📱 App: idnapp://profile/{IDN_USER_ID}"
+        f"📱 <a href='https://idn-app.idn.link/s/profile-5as6nw'>Buka di App IDN</a>"
     )
     if thumbnail:
         url = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"
